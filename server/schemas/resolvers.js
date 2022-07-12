@@ -4,20 +4,20 @@ const { User } = required('../models');
 
 const resolvers = {
     Query: {
-        me: async () => {
-
-        },
-        user: async () => {
-            return User.findOne({ username })
+        me: async (parent, args, context) => {
+            if (context.user) {
+              const userData = await User.findOne({ _id: context.user._id })
                 .select('-__v -password')
                 .populate('savedBooks');
+          
+              return userData;
+            }
+          
+            throw new AuthenticationError('Not logged in');
         }
     },
     Mutation: {
-        getSingleUser: async () => {
-
-        },
-        createUser: async () => {
+        addUser: async () => {
 
         },
         login: async () => {
@@ -26,7 +26,7 @@ const resolvers = {
         saveBook: async () => {
 
         },
-        deleteBook: async () => {
+        removeBook: async () => {
 
         }
     }
