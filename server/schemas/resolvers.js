@@ -55,6 +55,8 @@ const resolvers = {
             throw new AuthenticationError('You need to be logged in!');
         },
         removeBook: async (parent, args, context) => {
+          console.log(context.user);
+          throw new Error('aborted');
             if (context.user) {
                 const book = await Book.findOne({ bookId: args.bookId });
             
